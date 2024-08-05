@@ -14,4 +14,9 @@ type ResponseMu struct {
 }
 
 type ResponseCu struct {
+	Message     string      `json:"Message"`
+	Assignments []string    `json:"Assignments"`
+	Spawns      []string    `json:"Spawns"`
+	Output      interface{} `json:"Output"`
+	GasUsed     int64       `json:"GasUsed"`
 }

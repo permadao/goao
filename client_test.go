@@ -37,7 +37,13 @@ func TestSend(t *testing.T) {
 func TestEval(t *testing.T) {
 	// res, err := tClient.Eval(
 	// 	"ya9XinY0qXeYyf7HXANqzOiKns8yiXZoDtFqUMXkX0Q",
-	// 	"a=1")
+	// 	"1+1")
+	// assert.NoError(t, err)
+	// fmt.Println(res)
+}
+
+func TestResult(t *testing.T) {
+	// res, err := tClient.Result("ya9XinY0qXeYyf7HXANqzOiKns8yiXZoDtFqUMXkX0Q", "5JtjkYy1hk0Zce5mP6gDWIOdt9rCSQAFX-K9jZnqniw")
 	// assert.NoError(t, err)
 	// fmt.Println(res)
 }

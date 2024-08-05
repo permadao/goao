@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"net/http"
 
 	"github.com/permadao/goao/schema"
 	"github.com/permadao/goar"
@@ -19,9 +20,12 @@ type Client struct {
 }
 
 func NewClient(muURL, cuURL string, bundler *goar.Bundler) *Client {
+	muCli := gentleman.New().URL(muURL)
+	cuCli := gentleman.New().URL(cuURL)
+
 	return &Client{
-		muCli: gentleman.New().URL(muURL),
-		cuCli: gentleman.New().URL(cuURL),
+		muCli: muCli,
+		cuCli: cuCli,
 
 		bundler: bundler,
 	}
@@ -47,10 +51,8 @@ func (c *Client) Send(processId, data string, tags []goarSchema.Tag) (res schema
 	if err != nil {
 		return
 	}
-	defer resp.Close()
-
-	if resp.StatusCode != 202 {
-		err = fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+	if !resp.Ok {
+		err = fmt.Errorf("invalid server response: %d", resp.StatusCode)
 		return
 	}
 
@@ -65,4 +67,36 @@ func (c *Client) Eval(processId, code string) (res schema.ResponseMu, err error)
 			goarSchema.Tag{Name: "Action", Value: "Eval"},
 		},
 	)
+}
+
+func (c *Client) Result(processId, messageId string) (res schema.ResponseCu, err error) {
+	req := c.cuCli.Get()
+	req.AddPath(fmt.Sprintf("/result/%v", messageId))
+	req.AddQuery("process-id", processId)
+
+	resp, err := req.Send()
+	if err != nil {
+		return
+	}
+	if !resp.Ok {
+		err = fmt.Errorf("invalid server response: %d", resp.StatusCode)
+		return
+	}
+
+	// golang http not handle Temporary Redirect(307)
+	if resp.StatusCode == http.StatusTemporaryRedirect {
+		loc := resp.Header.Get("Location")
+		resp.Close()
+		resp, err = c.cuCli.Request().URL(loc).Send()
+		if err != nil {
+			return
+		}
+		if !resp.Ok {
+			err = fmt.Errorf("invalid server response: %d", resp.StatusCode)
+			return
+		}
+	}
+
+	err = json.Unmarshal(resp.Bytes(), &res)
+	return
 }

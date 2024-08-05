@@ -3,6 +3,12 @@ module github.com/permadao/goao
 go 1.22.5
 
 require (
+	github.com/permadao/goar v0.0.0-20240801065541-f16eb55d565c
+	github.com/stretchr/testify v1.9.0
+	gopkg.in/h2non/gentleman.v2 v2.0.5
+)
+
+require (
 	github.com/bits-and-blooms/bitset v1.10.0 // indirect
 	github.com/btcsuite/btcd/btcec/v2 v2.2.0 // indirect
 	github.com/btcsuite/btcd/btcutil v1.1.5 // indirect
@@ -25,10 +31,8 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mmcloughlin/addchain v0.4.0 // indirect
 	github.com/panjf2000/ants/v2 v2.10.0 // indirect
-	github.com/permadao/goar v0.0.0-20240801065541-f16eb55d565c // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
-	github.com/stretchr/testify v1.9.0 // indirect
 	github.com/supranational/blst v0.3.11 // indirect
 	github.com/tidwall/gjson v1.17.3 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
@@ -38,7 +42,6 @@ require (
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/sys v0.22.0 // indirect
 	golang.org/x/term v0.22.0 // indirect
-	gopkg.in/h2non/gentleman.v2 v2.0.5 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	rsc.io/tmplfunc v0.0.3 // indirect
 )
