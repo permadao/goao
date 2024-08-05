@@ -1,9 +1,11 @@
 package goao
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/permadao/goar"
+	"github.com/stretchr/testify/assert"
 )
 
 var tClient *Client
@@ -43,7 +45,7 @@ func TestEval(t *testing.T) {
 }
 
 func TestResult(t *testing.T) {
-	// res, err := tClient.Result("ya9XinY0qXeYyf7HXANqzOiKns8yiXZoDtFqUMXkX0Q", "5JtjkYy1hk0Zce5mP6gDWIOdt9rCSQAFX-K9jZnqniw")
-	// assert.NoError(t, err)
-	// fmt.Println(res)
+	res, err := tClient.Result("ya9XinY0qXeYyf7HXANqzOiKns8yiXZoDtFqUMXkX0Q", "5JtjkYy1hk0Zce5mP6gDWIOdt9rCSQAFX-K9jZnqniw")
+	assert.NoError(t, err)
+	fmt.Println(res)
 }
