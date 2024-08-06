@@ -40,18 +40,19 @@ func init() {
 	}
 }
 
-func TestSend(t *testing.T) {
+func TestClient_Send(t *testing.T) {
 	// res, err := tClient.Send(
 	// 	"ya9XinY0qXeYyf7HXANqzOiKns8yiXZoDtFqUMXkX0Q",
 	// 	"",
-	// 	[]schema.Tag{
-	// 		schema.Tag{Name: "Action", Value: "Claim"},
+	// 	schema.TypeMessage,
+	// 	[]goarSchema.Tag{
+	// 		{Name: "Action", Value: "Claim"},
 	// 	})
 	// assert.NoError(t, err)
 	// fmt.Println(res)
 }
 
-func TestEval(t *testing.T) {
+func TestClient_Eval(t *testing.T) {
 	// res, err := tClient.Eval(
 	// 	"ya9XinY0qXeYyf7HXANqzOiKns8yiXZoDtFqUMXkX0Q",
 	// 	"1+1")
@@ -59,7 +60,7 @@ func TestEval(t *testing.T) {
 	// fmt.Println(res)
 }
 
-func TestSpawn(t *testing.T) {
+func TestClient_Spawn(t *testing.T) {
 	// res, err := tClient.Spawn(
 	// 	"test1", "goao-test",
 	// 	schema.DefaultModule, schema.DefaultScheduler)
@@ -74,7 +75,7 @@ func TestSpawn(t *testing.T) {
 	// t.Log(res)
 }
 
-func TestResult(t *testing.T) {
+func TestClient_Result(t *testing.T) {
 	res, err := tClient.Result("ya9XinY0qXeYyf7HXANqzOiKns8yiXZoDtFqUMXkX0Q", "5JtjkYy1hk0Zce5mP6gDWIOdt9rCSQAFX-K9jZnqniw")
 	assert.NoError(t, err)
 	fmt.Println(res)

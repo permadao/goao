@@ -101,22 +101,25 @@ func (c *Client) Result(processId, messageId string) (res schema.ResponseCu, err
 		return
 	}
 
+	defer resp.Close()
+	respBody := resp.Bytes()
+
 	// golang http not handle Temporary Redirect(307)
 	if resp.StatusCode == http.StatusTemporaryRedirect {
-		loc := resp.Header.Get("Location")
-		resp.Close()
-		resp, err = c.cuCli.Request().URL(loc).Send()
+		var redirectResp *gentleman.Response
+		redirectResp, err = c.cuCli.Request().URL(resp.Header.Get("Location")).Send()
 		if err != nil {
 			return
 		}
-		if !resp.Ok {
+		if !redirectResp.Ok {
 			err = fmt.Errorf("invalid server response: %d", resp.StatusCode)
 			return
 		}
+		defer redirectResp.Close()
+		respBody = redirectResp.Bytes()
 	}
 
-	defer resp.Close()
-	err = json.Unmarshal(resp.Bytes(), &res)
+	err = json.Unmarshal(respBody, &res)
 	return
 }
 
@@ -157,23 +160,23 @@ func (c *Client) DryRun(processId, data string, tags []goarSchema.Tag) (res sche
 		err = fmt.Errorf("invalid server response: %d", resp.StatusCode)
 		return
 	}
+	defer resp.Close()
+	respBody := resp.Bytes()
 
 	if resp.StatusCode == http.StatusTemporaryRedirect {
-		redirectURL := resp.Header.Get("Location")
-		resp.Close()
-		req = gentleman.New().URL(redirectURL).Post()
-		req.JSON(payload)
-		resp, err = req.Send()
+		var redirectResp *gentleman.Response
+		redirectResp, err = gentleman.New().URL(resp.Header.Get("Location")).Post().JSON(payload).Send()
 		if err != nil {
 			return
 		}
-		if !resp.Ok {
+		if !redirectResp.Ok {
 			err = fmt.Errorf("invalid server response: %d", resp.StatusCode)
 			return
 		}
+		defer redirectResp.Close()
+		respBody = redirectResp.Bytes()
 	}
 
-	defer resp.Close()
-	err = json.Unmarshal(resp.Bytes(), &res)
+	err = json.Unmarshal(respBody, &res)
 	return
 }
