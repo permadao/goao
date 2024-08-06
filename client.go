@@ -4,14 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"net/http"
-	"strconv"
-	"time"
-
 	"github.com/permadao/goao/schema"
 	"github.com/permadao/goar"
 	goarSchema "github.com/permadao/goar/schema"
 	"gopkg.in/h2non/gentleman.v2"
+	"net/http"
+	"strconv"
+	"time"
 )
 
 type Client struct {
@@ -76,6 +75,18 @@ func (c *Client) Eval(processId, code string) (res schema.ResponseMu, err error)
 	)
 }
 
+func (c *Client) Spawn(processName, appName, module, scheduler string) (res schema.ResponseMu, err error) {
+	return c.Send(
+		"", strconv.Itoa(int(time.Now().UnixNano())), schema.TypeProcess,
+		[]goarSchema.Tag{
+			{Name: "Name", Value: processName},
+			{Name: "App-Name", Value: appName},
+			{Name: "Module", Value: module},
+			{Name: "Scheduler", Value: scheduler},
+		},
+	)
+}
+
 func (c *Client) Result(processId, messageId string) (res schema.ResponseCu, err error) {
 	req := c.cuCli.Get()
 	req.AddPath(fmt.Sprintf("/result/%v", messageId))
@@ -107,18 +118,6 @@ func (c *Client) Result(processId, messageId string) (res schema.ResponseCu, err
 	defer resp.Close()
 	err = json.Unmarshal(resp.Bytes(), &res)
 	return
-}
-
-func (c *Client) Spawn(processName, appName, module, scheduler string) (res schema.ResponseMu, err error) {
-	return c.Send(
-		"", strconv.Itoa(int(time.Now().UnixNano())), schema.TypeProcess,
-		[]goarSchema.Tag{
-			{Name: "Name", Value: processName},
-			{Name: "App-Name", Value: appName},
-			{Name: "Module", Value: module},
-			{Name: "Scheduler", Value: scheduler},
-		},
-	)
 }
 
 func (c *Client) DryRun(processId, data string, tags []goarSchema.Tag) (res schema.ResponseCu, err error) {
