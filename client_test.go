@@ -15,14 +15,14 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-	bundler, err := goar.NewBundler(signer)
+
+	tClient, err = NewClient(
+		"https://mu.ao-testnet.xyz",
+		"https://cu.ao-testnet.xyz",
+		signer)
 	if err != nil {
 		panic(err)
 	}
-	tClient = NewClient(
-		"https://mu.ao-testnet.xyz",
-		"https://cu.ao-testnet.xyz",
-		bundler)
 }
 
 func TestSend(t *testing.T) {
