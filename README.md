@@ -18,5 +18,5 @@ See details in `client_test.go`.
 - [x] Send: send message to ao process
 - [x] Eval: send eval message to ao process
 - [x] Result: request cu get process result
-- [ ] Spawn
-- [ ] Dry run
+- [x] Spawn: create ao process
+- [x] DryRun: dry run ao process
