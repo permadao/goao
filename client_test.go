@@ -24,17 +24,20 @@ func init() {
 	tClient, err = NewClient(
 		"https://mu.ao-testnet.xyz",
 		"https://cu.ao-testnet.xyz",
-		bundler)
-
-	eccSigner, err := goether.NewSigner("4c3f9a1e5b234ce8f1ab58d82f849c0f70a4d5ceaf2b6e2d9a6c58b1f897ef0a")
+		signer)
 	if err != nil {
 		panic(err)
 	}
-	eccBundler, _ := goar.NewBundler(eccSigner)
-	eccClient = NewClient(
+
+	eccSigner, _ := goether.NewSigner("4c3f9a1e5b234ce8f1ab58d82f849c0f70a4d5ceaf2b6e2d9a6c58b1f897ef0a")
+	eccClient, err = NewClient(
 		"https://mu.ao-testnet.xyz",
 		"https://cu.ao-testnet.xyz",
-		eccBundler)
+		eccSigner)
+
+	if err != nil {
+		panic(err)
+	}
 }
 
 func TestSend(t *testing.T) {
