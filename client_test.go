@@ -20,11 +20,8 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-	bundler, err := goar.NewBundler(signer)
-	if err != nil {
-		panic(err)
-	}
-	tClient = NewClient(
+
+	tClient, err = NewClient(
 		"https://mu.ao-testnet.xyz",
 		"https://cu.ao-testnet.xyz",
 		bundler)

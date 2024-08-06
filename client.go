@@ -21,16 +21,21 @@ type Client struct {
 	bundler *goar.Bundler
 }
 
-func NewClient(muURL, cuURL string, bundler *goar.Bundler) *Client {
+func NewClient(muURL, cuURL string, signer interface{}) (*Client, error) {
 	muCli := gentleman.New().URL(muURL)
 	cuCli := gentleman.New().URL(cuURL)
+
+	bundler, err := goar.NewBundler(signer)
+	if err != nil {
+		return nil, err
+	}
 
 	return &Client{
 		muCli: muCli,
 		cuCli: cuCli,
 
 		bundler: bundler,
-	}
+	}, nil
 }
 
 func (c *Client) Send(processId, data, msgType string, tags []goarSchema.Tag) (res schema.ResponseMu, err error) {
